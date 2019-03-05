@@ -143,7 +143,7 @@
             success: function(data, textStatus, jqXHR){
                 window.location.href = '#/' + data.uri.split('bins/')[1] + '/';
                 copyToClipboard(window.location.href);
-                document.title = 'edit page &middot; journal';
+                document.title = 'edit page · journal';
                 alert('Permalink copied to clipboard.');
             },
             error: function(data) {
@@ -159,7 +159,7 @@
             $('#loader').css('display', 'block');
             $.getJSON('https://api.myjson.com/bins/' + window.location.hash.split('/')[1], function(data) {
                 nutrition = data;
-                document.title = 'edit page &middot; journal';
+                document.title = 'edit page · journal';
                 updateGUI();
             });
             $('#loader').css('display', 'none');
