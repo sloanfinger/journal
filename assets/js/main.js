@@ -145,7 +145,7 @@
             window.location.href = window.location.href.split('#')[0];
         }
     } else {
-        if (localStorage.getItem('nutrition') == '') {
+        if (localStorage.getItem('nutrition') === null) {
             nutrition = {date: '', times: {}, workout: []};
         } else {
             nutrition = JSON.parse(localStorage.getItem('nutrition'));
