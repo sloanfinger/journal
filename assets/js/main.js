@@ -1,28 +1,5 @@
 
-    /* global $, btoa, copyToClipboard */
-    
-    function setCookie(cname,cvalue,exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays*24*60*60*1000));
-        var expires = 'expires=' + d.toGMTString();
-        document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
-    }
-        
-    function getCookie(cname) {
-        var name = cname + '=';
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for(var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return '';
-    }
+    /* global $, btoa, copyToClipboard, localStorage */
     
     function customFood(given) {
         var callback = given;
@@ -128,7 +105,7 @@
             table.children().filter('tbody').append('<tr data-index="' + exercise.toString() + '"><th style="width: 40%">' + nutrition.workout[exercise].description + '</th><th>' + nutrition.workout[exercise].start + '</th><th>' + nutrition.workout[exercise].end + '</th><th><a onclick="removeWorkout(this)"><i class="fas fa-times"></i></a></th></tr>');
         }
         $('#content').append('<div class="container has-text-centered"><button class="button is-primary is-medium" id="addMeal" onclick="addMeal()"><i class="fas fa-utensils"></i>&nbsp;&nbsp;<b>Add Meal</b></button>&nbsp;&nbsp;&nbsp;&nbsp;<button class="button is-primary is-medium" id="addWorkout" onclick="addWorkout()"><i class="fas fa-dumbbell"></i>&nbsp;&nbsp;<b>Add Workout</b></button></div><br /><br />');
-        setCookie('nutrition', JSON.stringify(nutrition), 30);
+        localStorage.setItem('nutrition', JSON.stringify(nutrition));
         $('#loader').css('display', 'none');
         $('#content').css('display', 'block');
     }
@@ -168,10 +145,10 @@
             window.location.href = window.location.href.split('#')[0];
         }
     } else {
-        if (getCookie('nutrition') == '') {
+        if (localStorage.getItem('nutrition') == '') {
             nutrition = {date: '', times: {}, workout: []};
         } else {
-            nutrition = JSON.parse(getCookie('nutrition'));
+            nutrition = JSON.parse(localStorage.getItem('nutrition'));
         }
         var d = new Date();
         var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
