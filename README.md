@@ -1,1 +1,0 @@
-Favicon courtesy of Font Awesome, an awesome font.
