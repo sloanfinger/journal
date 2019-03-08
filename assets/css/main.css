@@ -23,10 +23,14 @@
     }
     
     #logo > sub {
-        margin-top: 8px;
-        font-size: 0.8em;
+        margin-top: 9px;
+        font-size: 0.66em;
         margin-left: 1px;
         letter-spacing: 0.25px;
+    }
+    
+    #logo > sub > span {
+        font-size: 0.98em;
     }
     
     #loader {
@@ -44,4 +48,8 @@
     
     table.has-regular-text > tbody > tr > th {
         font-weight: normal !important;
+    }
+    
+    hr {
+        background-color: #454545;
     }
