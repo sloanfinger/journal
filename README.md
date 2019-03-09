@@ -1,7 +1,7 @@
 # <sup> journal</sup>&nbsp;|&nbsp;<sub>by sloanfinger</sub>
 #### version info:
-- version `0.2-beta`
--  previous release was `March 8, 2019`
+- version: `0.2-beta`
+- release date: `March 8, 2019`
 
 #### current features:
  - auto-save daily nutrition data on your device, without signing in
