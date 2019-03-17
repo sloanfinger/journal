@@ -248,6 +248,9 @@
         if (localStorage.getItem('userData') === null) {
             nutrition = {date: '', times: {}, workout: [], showWorkout: false};
         } else 
+        if (localStorage.getItem('userData') === '') {
+            nutrition = {date: '', times: {}, workout: [], showWorkout: false};
+        } else 
         if (JSON.parse(localStorage.getItem('userData')).length === 0) {
             userData = [{date: date, times: {}, workout: [], showWorkout: false}];
             nutrition = userData[0];
@@ -266,8 +269,8 @@
         var date = weekdays[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate().toString();
         var a = new Date(date);
         var b = new Date(nutrition.date); 
-        if (Number(a) > Number(b)) {
-            userData[userData.length] = {date: date, times: {}, workout: []};
+        if (Number(a) > Number(b) || nutrition.date === '') {
+            userData[userData.length] = {date: date, times: {}, workout: [], showWorkout: false};
             nutrition = userData[userData.length - 1];
         }
         updateGUI();
