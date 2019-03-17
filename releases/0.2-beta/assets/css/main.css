@@ -1,0 +1,55 @@
+    
+    @import url('https://fonts.googleapis.com/css?family=Dekko');
+    
+    html {
+        overflow-y: auto;
+        scroll-behavior: smooth;
+    }
+    
+    body[data-create] {
+        padding: 8px 12px;
+    }
+    
+    #logo {
+        padding-left: 16px;
+        padding-right: 16px;
+        font-weight: bold;
+    }
+    
+    #logo > span {
+        font-family: 'Dekko';
+        font-size: 1.4em;
+        letter-spacing: 1px;
+    }
+    
+    #logo > sub {
+        margin-top: 9px;
+        font-size: 0.66em;
+        margin-left: 1px;
+        letter-spacing: 0.25px;
+    }
+    
+    #logo > sub > span {
+        font-size: 0.98em;
+    }
+    
+    #loader {
+        display: none;
+        padding: 64px 24px;
+    }
+    
+    #content {
+        padding: 32px 24px;
+    }
+    
+    table.has-regular-text > thead > tr > th, table.has-regular-text > tfoot > tr > th {
+        font-size: 1.04em;
+    }
+    
+    table.has-regular-text > tbody > tr > th {
+        font-weight: normal !important;
+    }
+    
+    hr {
+        background-color: #454545;
+    }
