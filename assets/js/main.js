@@ -1,5 +1,27 @@
 
-    /* global $, btoa, copyToClipboard, localStorage */
+    /* global $, btoa, localStorage, */
+    
+    function removeHash() { 
+        var scrollV, scrollH, loc = window.location;
+        if ('pushState' in window.history)
+            window.history.pushState('', document.title, loc.pathname + loc.search);
+        else {
+            scrollV = document.body.scrollTop;
+            scrollH = document.body.scrollLeft;
+            loc.hash = '';
+            document.body.scrollTop = scrollV;
+            document.body.scrollLeft = scrollH;
+        }
+    }
+    
+    function options() {
+        $.get('optionsWindow.html', function(data) {
+            var d = new Date();
+            var optionsWindow = window.open('', '', 'width=480,height=720');
+            optionsWindow.document.write(data);
+            optionsWindow.document.body.setAttribute('data-create', btoa(d).toString());
+        }, 'text');
+    }
     
     function customFood(given) {
         var callback = given;
@@ -78,6 +100,11 @@
         });
     }
     
+    function removeMeal(time) {
+        delete nutrition.times[time];
+        updateGUI();
+    }
+    
     function downloadCSV(array, filename) {
         const rows = array;
         let csvContent = "data:text/csv;charset=utf-8," + rows.map(e=>e.join(",")).join("\n");
@@ -109,7 +136,7 @@
         }
         if (nutrition.workout.length > 0) {
             csv.push(['Workouts']);
-            csv.push(['Description', 'Start Time', 'End Time']);
+            csv.push(['Description', 'Start', 'End']);
             for (var exercise in nutrition.workout) {
                 var data = nutrition.workout[exercise];
                 csv.push([data.description, data.start, data.end]);
@@ -138,8 +165,8 @@
         $('#content').html('<h2 class="title is-3 has-text-centered"><u id="date">' + nutrition.date + '</u></h2><br />');
         nutrition.final = {protein: 0, carbs: 0, fat: 0, calories: 0};
         for (var time in nutrition.times) {
-            var element = $('#content').append('<div class="meal" data-time="' + time + '"><h4 class="title is-4">' + time + '&nbsp;&nbsp;&nbsp;<a onclick="addFood(\'' + time + '\');"><i class="fas fa-plus fa-sm"></i></a></h4><table class="table is-fullwidth has-regular-text"><thead><tr><th style="width:40%">Food</th><th>Protein</th><th>Carbs</th><th>Fat</th><th>Calories</th><th></th></tr></thead><tbody></tbody></table></div>');
-            var table = $(element).children().filter('div.meal[data-time="'+ time + '"]').children().filter('table');
+            var element = $('#content').append('<div class="meal" data-time="' + time + '"><h4 class="title is-4">' + time + '&nbsp;&nbsp;&nbsp;<a onclick="addFood(\'' + time + '\');"><i class="fas fa-plus fa-sm"></i></a></h4><div class="table-wrapper"><div class="table-scroll"><table class="table is-fullwidth has-regular-text"><thead><tr><th style="width:40%">Food</th><th>Protein</th><th>Carbs</th><th>Fat</th><th>Calories</th><th></th></tr></thead><tbody></tbody></table></div></div></div><br /><hr /><br />');
+            var table = element.children().filter('div.meal[data-time="'+ time + '"]').children().filter('div.table-wrapper').children().filter('div.table-scroll').children().filter('table');
             var meal = nutrition.times[time];
             var total = {protein: 0, carbs: 0, fat: 0, calories: 0};
             for (var item in meal) {
@@ -156,15 +183,18 @@
             }
             table.append('<tfoot><tr><th style="width: 40%">Total</th><th>' + total.protein + 'g</th><th>' + total.carbs + 'g</th><th>' + total.fat + 'g</th><th>' + total.calories + 'cal</th><th></th></tr></foot>');
         }
+        if (nutrition.showWorkout === true) {
+            var workout_element = $('#content').append('<div id="workout"><h4 class="title is-4">Workouts&nbsp;&nbsp;&nbsp;<a onclick="addWorkout();"><i class="fas fa-plus fa-sm"></i></a></h4><br id="workout_prepend" /><hr /><br /></div>');
+        }
         if (nutrition.workout.length > 0) {
-            var element = $('#content').append('<br /><hr /><br /><div id="workout"><h4 class="title is-4">Workouts</h4><table class="table is-fullwidth has-regular-text"><thead><tr><th style="width:40%">Description</th><th style="width:15%">Start Time</th><th style="width:15%">End Time</th><th style="width:15%"></th><th style="width:8.5%"></th><th style="width:8.5%"></th></tr></thead><tbody></tbody></table></div>');
+            $('#workout_prepend').prepend('<div class="table-wrapper"><div class="table-scroll"><table class="table is-fullwidth has-regular-text"><thead><tr><th style="width:40%">Description</th><th style="width:15%">Start Time</th><th style="width:15%">End Time</th><th style="width:15%"></th><th style="width:8.5%"></th><th style="width:8.5%"></th></tr></thead><tbody></tbody></table></div></div>');
         }
         for (var exercise in nutrition.workout) {
-            var table = $(element).children().filter('div#workout').children().filter('table');
+            var table = $('div#workout').children().filter('div.table-wrapper').children().filter('div.table-scroll').children().filter('table');
             table.children().filter('tbody').append('<tr data-index="' + exercise.toString() + '"><th style="width: 40%">' + nutrition.workout[exercise].description + '</th><th>' + nutrition.workout[exercise].start + '</th><th>' + nutrition.workout[exercise].end + '</th><th>&nbsp;</th><th>&nbsp;</th><th><a onclick="removeWorkout(this)"><i class="fas fa-times"></i></a></th></tr>');
         }
         if (Object.keys(nutrition.times).length > 0) {
-            $('#content').append('<br /><hr /><br /><div id="stats"><h4 class="title is-4">Today\'s Stats</h4><table class="table is-fullwidth has-regular-text"><thead><tr><th style="width: 40%">Time of Meal</th><th>Protein</th><th>Carbs</th><th>Fat</th><th>Calories</th><th></th></tr></thead><tbody></tbody></table></div>');
+            $('#content').append('<div id="today-stats"><h4 class="title is-4">Today\'s Stats&nbsp;&nbsp;&nbsp;<a onclick="downloadStats()"><i class="fas fa-download"></i></a></h4><div class="table-wrapper"><div class="table-scroll"><table class="table is-fullwidth has-regular-text" id="stats"><thead><tr><th style="width: 40%">Time</th><th>Protein</th><th>Carbs</th><th>Fat</th><th>Calories</th><th></th></tr></thead><tbody></tbody></table></div></div></div>');
         }
         for (var time in nutrition.times) {
             var table = $('#stats');
@@ -177,43 +207,36 @@
                 total.fat += Number(data.fat);
                 total.calories += Number(data.calories);;
             }
-            table.children().filter('table').children().filter('tbody').append('<tr><th style="width: 40%">' + time + '</th><th>' + total.protein + 'g</th><th>' + total.carbs + 'g</th><th>' + total.fat + 'g</th><th>' + total.calories + 'cal</th><th></th></tr>');
+            table.children().filter('tbody').append('<tr><th style="width: 40%">' + time + '</th><th>' + total.protein + 'g</th><th>' + total.carbs + 'g</th><th>' + total.fat + 'g</th><th>' + total.calories + 'cal</th><th><a onclick="removeMeal(\'' + time + '\')"><i class="fas fa-times"></i></a></th></tr>');
         }
         if (Object.keys(nutrition.times).length > 0) {
-            table.children().filter('table').append('<tfoot><tr><th>Total</th><th>' + nutrition.final.protein + 'g (' + Math.round((nutrition.final.protein * 4) / nutrition.final.calories * 100) + '%)</th><th>' + nutrition.final.carbs + 'g (' + Math.round((nutrition.final.carbs * 4) / nutrition.final.calories * 100) + '%)</th><th>' + nutrition.final.fat + 'g (' + Math.round((nutrition.final.fat * 9) / nutrition.final.calories * 100) + '%)</th><th>' + nutrition.final.calories + 'cal</th><th><a onclick="downloadStats()"><i class="fas fa-download"></i></a></th></tr></tfoot>');
+            table.append('<tfoot><tr><th>Total</th><th>' + nutrition.final.protein + 'g (' + Math.round((nutrition.final.protein * 4) / nutrition.final.calories * 100) + '%)</th><th>' + nutrition.final.carbs + 'g (' + Math.round((nutrition.final.carbs * 4) / nutrition.final.calories * 100) + '%)</th><th>' + nutrition.final.fat + 'g (' + Math.round((nutrition.final.fat * 9) / nutrition.final.calories * 100) + '%)</th><th>' + nutrition.final.calories + 'cal</th><th></th></tr></tfoot>');
         }
-        $('#content').append('<br /><br /><div class="container has-text-centered"><button class="button is-primary is-medium" id="addMeal" onclick="addMeal()"><i class="fas fa-utensils"></i>&nbsp;&nbsp;<b>Add Meal</b></button>&nbsp;&nbsp;&nbsp;&nbsp;<button class="button is-primary is-medium" id="addWorkout" onclick="addWorkout()"><i class="fas fa-dumbbell"></i>&nbsp;&nbsp;<b>Add Workout</b></button></div><br />');
-        localStorage.setItem('nutrition', JSON.stringify(nutrition));
+        $('#content').append('<br /><br /><div class="container has-text-centered"><button class="button is-primary is-medium" id="addMeal" onclick="addMeal()">&nbsp;&nbsp;<i class="fas fa-utensils"></i>&nbsp;&nbsp;<b>Add Meal</b>&nbsp;&nbsp;</button></div><br />');
+        if (userData.length < 1) {
+            userData[0] = nutrition;
+        } else {
+            userData[userData.length - 1] = nutrition;
+        }
+        localStorage.setItem('userData', JSON.stringify(userData));
+        removeHash();
         $('#loader').css('display', 'none');
         $('#content').css('display', 'block');
     }
     
-    $('#share').click(function() {
-        $.ajax({
-            url: 'https://api.myjson.com/bins',
-            type: 'POST',
-            data: JSON.stringify(nutrition),
-            contentType:'application/json; charset=utf-8',
-            dataType:'json',
-            success: function(data, textStatus, jqXHR){
-                window.location.href = '#/' + data.uri.split('bins/')[1] + '/';
-                copyToClipboard(window.location.href);
-                document.title = 'edit page · journal';
-                alert('Permalink copied to clipboard.');
-            },
-            error: function(data) {
-                alert('An error occured while saving your data.');
-            }
-        });
+    $('#options').click(function() {
+        options();
     });
     
     var windowListener = {};
+    var userData = [];
     var nutrition;
     if (window.location.hash) {
         if (window.location.hash.search('/') !== -1) {
             $('#loader').css('display', 'block');
             $.getJSON('https://api.myjson.com/bins/' + window.location.hash.split('/')[1], function(data) {
-                nutrition = data;
+                userData[0] = data;
+                nutrition = userData[0];
                 updateGUI();
             });
             $('#loader').css('display', 'none');
@@ -222,19 +245,30 @@
             window.location.href = window.location.href.split('#')[0];
         }
     } else {
-        if (localStorage.getItem('nutrition') === null) {
-            nutrition = {date: '', times: {}, workout: []};
+        if (localStorage.getItem('userData') === null) {
+            nutrition = {date: '', times: {}, workout: [], showWorkout: false};
+        } else 
+        if (JSON.parse(localStorage.getItem('userData')).length === 0) {
+            userData = [{date: date, times: {}, workout: [], showWorkout: false}];
+            nutrition = userData[0];
+        } else
+        if (JSON.parse(localStorage.getItem('userData')).length === 30) {
+            userData.splice(-1 * (userData.length - 1));
+            userData[29] = {date: date, times: {}, workout: [], showWorkout: false};
+            nutrition = userData[29];
         } else {
-            nutrition = JSON.parse(localStorage.getItem('nutrition'));
+            userData = JSON.parse(localStorage.getItem('userData'));
+            nutrition = userData[userData.length - 1];
         }
         var d = new Date();
         var weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         var date = weekdays[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate().toString();
         var a = new Date(date);
-        var b = new Date(nutrition.date);
-        if (Number(a) !== Number(b)) {
-            nutrition = {date: date, times: {}, workout: []};
+        var b = new Date(nutrition.date); 
+        if (Number(a) > Number(b)) {
+            userData[userData.length] = {date: date, times: {}, workout: []};
+            nutrition = userData[userData.length - 1];
         }
         updateGUI();
     }

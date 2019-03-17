@@ -9,4 +9,4 @@
         };
         opener.windowListener[document.body.getAttribute('data-create')].callback(exercise);
         window.close();
-    })
+    });

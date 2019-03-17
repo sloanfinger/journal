@@ -53,3 +53,13 @@
     hr {
         background-color: #454545;
     }
+    
+    .table-wrapper {
+        position: relative;
+        width: 100%;
+    }
+    
+    .table-scroll {
+        overflow-x: auto;
+        width: 100%;
+    }
