@@ -107,12 +107,12 @@
     
     function downloadCSV(array, filename) {
         const rows = array;
-        let csvContent = "data:text/csv;charset=utf-8," + rows.map(e=>e.join(",")).join("\n");
+        let csvContent = 'data:text/csv;charset=utf-8,' + rows.map(e=>e.join(',')).join('\n');
         var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.style.display = "none";
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", filename + ".csv");
+        var link = document.createElement('a');
+        link.style.display = 'none';
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', filename + '.csv');
         document.body.appendChild(link); 
         link.click();
     }
