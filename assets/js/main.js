@@ -1,7 +1,7 @@
 
     /* global $, btoa, localStorage, */
-    
-    function removeHash() { 
+
+    function removeHash() {
         var scrollV, scrollH, loc = window.location;
         if ('pushState' in window.history)
             window.history.pushState('', document.title, loc.pathname + loc.search);
@@ -13,7 +13,7 @@
             document.body.scrollLeft = scrollH;
         }
     }
-    
+
     function options() {
         $.get('optionsWindow.html', function(data) {
             var d = new Date();
@@ -22,7 +22,7 @@
             optionsWindow.document.body.setAttribute('data-create', btoa(d).toString());
         }, 'text');
     }
-    
+
     function customFood(given) {
         var callback = given;
         $.get('customFood.html', function(data) {
@@ -34,7 +34,7 @@
             windowListener[btoa(d).toString()].callback = callback;
         }, 'text');
     }
-    
+
     function customWorkout(given) {
         var callback = given;
         $.get('customWorkout.html', function(data) {
@@ -46,7 +46,7 @@
             windowListener[btoa(d).toString()].callback = callback;
         }, 'text');
     }
-    
+
     function customMeal(given) {
         var callback = given;
         $.get('customMeal.html', function(data) {
@@ -58,7 +58,7 @@
             windowListener[btoa(d).toString()].callback = callback;
         }, 'text');
     }
-    
+
     function addFood(given) {
         var time = given;
         customFood(function(data) {
@@ -66,7 +66,7 @@
             updateGUI();
         });
     }
-    
+
     function removeFood(given) {
         var $parent = $(given).parent();
         var element = $parent.parent();
@@ -77,21 +77,21 @@
         }
         updateGUI();
     }
-    
+
     function addWorkout() {
         customWorkout(function(data) {
             nutrition.workout.push(data);
             updateGUI();
         });
     }
-    
+
     function removeWorkout(given) {
         var $parent = $(given).parent();
         var element = $parent.parent();
         nutrition.workout.splice(element.data('index'), 1);
         updateGUI();
     }
-    
+
     function addMeal() {
         customMeal(function(data) {
             nutrition.times[data] = [];
@@ -99,12 +99,12 @@
             updateGUI();
         });
     }
-    
+
     function removeMeal(time) {
         delete nutrition.times[time];
         updateGUI();
     }
-    
+
     function downloadCSV(array, filename) {
         const rows = array;
         let csvContent = 'data:text/csv;charset=utf-8,' + rows.map(e=>e.join(',')).join('\n');
@@ -113,10 +113,10 @@
         link.style.display = 'none';
         link.setAttribute('href', encodedUri);
         link.setAttribute('download', filename + '.csv');
-        document.body.appendChild(link); 
+        document.body.appendChild(link);
         link.click();
     }
-    
+
     function downloadStats() {
         var csv = [];
         for (var time in nutrition.times) {
@@ -158,14 +158,23 @@
         csv.push(['Total',  nutrition.final.protein + 'g (' + Math.round((nutrition.final.protein * 4) / nutrition.final.calories * 100) + '%)',  nutrition.final.carbs + 'g (' + Math.round((nutrition.final.carbs * 4) / nutrition.final.calories * 100) + '%)',  nutrition.final.fat + 'g (' + Math.round((nutrition.final.fat * 9) / nutrition.final.calories * 100) + '%)', data.calories + 'cal']);
         downloadCSV(csv, nutrition.date);
     }
-    
+
     function updateGUI() {
+        if (localStorage.getItem('theme') === null) {
+            localStorage.setItem('theme', 'light');
+        } else
+        if (localStorage.getItem('theme') === 'light') {
+            $('link[href="./assets/css/bulma-dark.css"]').attr('href', './assets/css/bulma.css');
+        } else
+        if (localStorage.getItem('theme') === 'dark') {
+            $('link[href="./assets/css/bulma.css"]').attr('href', './assets/css/bulma-dark.css');
+        }
         $('#content').css('display', 'none');
         $('#loader').css('display', 'block');
         $('#content').html('<h2 class="title is-3 has-text-centered"><u id="date">' + nutrition.date + '</u></h2><br />');
         nutrition.final = {protein: 0, carbs: 0, fat: 0, calories: 0};
         for (var time in nutrition.times) {
-            var element = $('#content').append('<div class="meal" data-time="' + time + '"><h4 class="title is-4">' + time + '&nbsp;&nbsp;&nbsp;<a onclick="addFood(\'' + time + '\');"><i class="fas fa-plus fa-sm"></i></a></h4><div class="table-wrapper"><div class="table-scroll"><table class="table is-fullwidth has-regular-text"><thead><tr><th style="width:40%">Food</th><th>Protein</th><th>Carbs</th><th>Fat</th><th>Calories</th><th></th></tr></thead><tbody></tbody></table></div></div></div><br /><hr /><br />');
+            var element = $('#content').append('<div class="meal" data-time="' + time + '"><h4 class="title is-4">' + time.split(':')[0].replace('0', '') + ':' + time.split(':')[1] + '&nbsp;&nbsp;&nbsp;<a onclick="addFood(\'' + time + '\');"><i class="fas fa-plus fa-sm"></i></a></h4><div class="table-wrapper"><div class="table-scroll"><table class="table is-fullwidth has-regular-text"><thead><tr><th style="width:40%">Food</th><th>Protein</th><th>Carbs</th><th>Fat</th><th>Calories</th><th></th></tr></thead><tbody></tbody></table></div></div></div><br /><hr /><br />');
             var table = element.children().filter('div.meal[data-time="'+ time + '"]').children().filter('div.table-wrapper').children().filter('div.table-scroll').children().filter('table');
             var meal = nutrition.times[time];
             var total = {protein: 0, carbs: 0, fat: 0, calories: 0};
@@ -223,14 +232,23 @@
         $('#loader').css('display', 'none');
         $('#content').css('display', 'block');
     }
-    
+
     $('#options').click(function() {
         options();
     });
-    
+
     var windowListener = {};
     var userData = [];
     var nutrition;
+    if (localStorage.getItem('theme') === null) {
+        localStorage.setItem('theme', 'light');
+    } else
+    if (localStorage.getItem('theme') === 'light') {
+        $('link[href="./assets/css/bulma-dark.css"]').attr('href', './assets/css/bulma.css');
+    } else
+    if (localStorage.getItem('theme') === 'dark') {
+        $('link[href="./assets/css/bulma.css"]').attr('href', './assets/css/bulma-dark.css');
+    }
     if (window.location.hash) {
         if (window.location.hash.search('/') !== -1) {
             $('#loader').css('display', 'block');
@@ -247,10 +265,10 @@
     } else {
         if (localStorage.getItem('userData') === null) {
             nutrition = {date: '', times: {}, workout: [], showWorkout: false};
-        } else 
+        } else
         if (localStorage.getItem('userData') === '') {
             nutrition = {date: '', times: {}, workout: [], showWorkout: false};
-        } else 
+        } else
         if (JSON.parse(localStorage.getItem('userData')).length === 0) {
             userData = [{date: date, times: {}, workout: [], showWorkout: false}];
             nutrition = userData[0];
@@ -268,11 +286,10 @@
         var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         var date = weekdays[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate().toString();
         var a = new Date(date);
-        var b = new Date(nutrition.date); 
+        var b = new Date(nutrition.date);
         if (Number(a) > Number(b) || nutrition.date === '') {
             userData[userData.length] = {date: date, times: {}, workout: [], showWorkout: false};
             nutrition = userData[userData.length - 1];
         }
         updateGUI();
     }
-    

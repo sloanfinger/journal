@@ -1,5 +1,5 @@
 
-    /* global $, Chart, opener */
+    /* global $, Chart, opener, localStorage */
     
     $('#download').click(function() {
         var canvas = document.getElementById('myChart');
@@ -116,4 +116,14 @@
                 }
             }
         }
-    });
+    });    
+    
+    if (localStorage.getItem('theme') === null) {
+        localStorage.setItem('theme', 'light');
+    } else
+    if (localStorage.getItem('theme') === 'light') {
+        $('link[href="./assets/css/bulma-dark.css"]').attr('href', './assets/css/bulma.css');
+    } else
+    if (localStorage.getItem('theme') === 'dark') {
+        $('link[href="./assets/css/bulma.css"]').attr('href', './assets/css/bulma-dark.css');
+    }

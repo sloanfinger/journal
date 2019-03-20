@@ -1,5 +1,5 @@
     
-    /* global $, opener, copyToClipboard, btoa */
+    /* global $, opener, copyToClipboard, btoa, localStorage */
     
     var nutrition = opener.nutrition;
     
@@ -31,6 +31,20 @@
         opener.updateGUI();
     });
     
+    $('#theme').on('change', function() {
+        opener.localStorage.setItem('theme', $(this).val().toLowerCase());
+        if (localStorage.getItem('theme') === 'light') {
+            $('link[href="./assets/css/bulma-dark.css"]').attr('href', './assets/css/bulma.css');
+            $('#theme').children().filter('option[val="Light"]').attr('selected', 'selected');
+            opener.updateGUI();
+        } else
+        if (localStorage.getItem('theme') === 'dark') {
+            $('link[href="./assets/css/bulma.css"]').attr('href', './assets/css/bulma-dark.css');
+            $('#theme').children().filter('option[val="Dark"]').attr('selected', 'selected');
+            opener.updateGUI();
+        }
+    });
+    
     $.ajax({
         url: 'https://api.myjson.com/bins',
         type: 'POST',
@@ -45,4 +59,16 @@
         error: function(data) {
             alert('An error occured while saving your data.');
         }
-    });
+    });    
+    
+    if (localStorage.getItem('theme') === null) {
+        localStorage.setItem('theme', 'light');
+    } else
+    if (localStorage.getItem('theme') === 'light') {
+        $('link[href="./assets/css/bulma-dark.css"]').attr('href', './assets/css/bulma.css');
+        $('#theme').children().filter('option[val="Light"]').attr('selected', 'selected');
+    } else
+    if (localStorage.getItem('theme') === 'dark') {
+        $('link[href="./assets/css/bulma.css"]').attr('href', './assets/css/bulma-dark.css');
+        $('#theme').children().filter('option[val="Dark"]').attr('selected', 'selected');
+    }
