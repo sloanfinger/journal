@@ -31,11 +31,13 @@
         return g;
     }
     
+    var abbr = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+    var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     var protein = [], carbs = [], fat = [], dates = [];
     var userData = opener.opener.userData;
     for (var i = 0; i < userData.length; i++) {
         var nutrition = userData[i];
-        dates.push(nutrition.date);
+        dates.push(abbr[months.indexOf(nutrition.date.split(' ')[1])] + ' ' + nutrition.date.split(' ')[2]);
         protein.push(Math.round(nutrition.final.protein * 4 / nutrition.final.calories * 100));
         carbs.push(Math.round(nutrition.final.carbs * 4 / nutrition.final.calories * 100));
         fat.push(Math.round(nutrition.final.fat * 9 / nutrition.final.calories * 100));
