@@ -6925,3 +6925,6 @@ label.panel-block {
 .footer {
   background-color: #282f2f;
   padding: 3rem 1.5rem 6rem; }
+label {
+color: white !important;
+}
