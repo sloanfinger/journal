@@ -86,3 +86,11 @@
         $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black');
         $('#theme').children().filter('option[val="Dark"]').attr('selected', 'selected');
     }
+    
+    if (localStorage.getItem('userData')) {
+        if (!JSON.parse(localStorage.getItem('userData'))[JSON.parse(localStorage.getItem('userData')).length - 1].showWorkout) {
+            $('#workout').children().filter('option[val="No"]').attr('selected', 'selected');
+        } else {
+            $('#workout').children().filter('option[val="Yes"]').attr('selected', 'selected');
+        }
+    }

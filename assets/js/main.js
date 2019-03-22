@@ -201,14 +201,16 @@
             table.append('<tfoot><tr><th style="width: 40%">Total</th><th>' + total.protein + 'g</th><th>' + total.carbs + 'g</th><th>' + total.fat + 'g</th><th>' + total.calories + 'cal</th><th></th></tr></foot>');
         }
         if (nutrition.showWorkout === true) {
-            var workout_element = $('#content').append('<div id="workout"><h4 class="title is-4">Workouts&nbsp;&nbsp;&nbsp;<a onclick="addWorkout();"><i class="fas fa-plus fa-sm"></i></a></h4><br id="workout_prepend" /><hr /><br /></div>');
-        }
-        if (nutrition.workout.length > 0) {
-            $('#workout_prepend').prepend('<div class="table-wrapper"><div class="table-scroll"><table class="table is-fullwidth has-regular-text"><thead><tr><th style="width:40%">Description</th><th style="width:15%">Start Time</th><th style="width:15%">End Time</th><th style="width:15%"></th><th style="width:8.5%"></th><th style="width:8.5%"></th></tr></thead><tbody></tbody></table></div></div>');
-        }
-        for (var exercise in nutrition.workout) {
-            var table = $('div#workout').children().filter('div.table-wrapper').children().filter('div.table-scroll').children().filter('table');
-            table.children().filter('tbody').append('<tr data-index="' + exercise.toString() + '"><th style="width: 40%">' + nutrition.workout[exercise].description + '</th><th>' + nutrition.workout[exercise].start + '</th><th>' + nutrition.workout[exercise].end + '</th><th>&nbsp;</th><th>&nbsp;</th><th><a onclick="removeWorkout(this)"><i class="fas fa-times"></i></a></th></tr>');
+            console.log(nutrition);
+            $('#content').append('<div id="workout"><h4 class="title is-4">Workouts&nbsp;&nbsp;&nbsp;<a onclick="addWorkout();"><i class="fas fa-plus fa-sm"></i></a></h4><div id="workout_prepend"></div><br /><hr /><br /></div>');
+            if (nutrition.workout.length > 0) {
+                $('#workout_prepend').prepend('<div class="table-wrapper"><div class="table-scroll"><table class="table is-fullwidth has-regular-text"><thead><tr><th style="width:40%">Description</th><th style="width:15%">Start Time</th><th style="width:15%">End Time</th><th style="width:15%"></th><th style="width:8.5%"></th><th style="width:8.5%"></th></tr></thead><tbody></tbody></table></div></div>');
+                for (var exercise in nutrition.workout) {
+                    console.log(exercise);
+                    console.log(nutrition.workout[exercise]);
+                    $('div#workout_prepend').children().filter('div.table-wrapper').children().filter('div.table-scroll').children().filter('table').children().filter('tbody').append('<tr data-index="' + exercise.toString() + '"><th style="width: 40%">' + nutrition.workout[exercise].description + '</th><th>' + nutrition.workout[exercise].start + '</th><th>' + nutrition.workout[exercise].end + '</th><th>&nbsp;</th><th>&nbsp;</th><th><a onclick="removeWorkout(this)"><i class="fas fa-times"></i></a></th></tr>');
+                }
+            }
         }
         if (Object.keys(nutrition.times).length > 0) {
             $('#content').append('<div id="today-stats"><h4 class="title is-4">Today\'s Stats&nbsp;&nbsp;&nbsp;<a onclick="downloadStats()"><i class="fas fa-download"></i></a></h4><div class="table-wrapper"><div class="table-scroll"><table class="table is-fullwidth has-regular-text" id="stats"><thead><tr><th style="width: 40%">Time</th><th>Protein</th><th>Carbs</th><th>Fat</th><th>Calories</th><th></th></tr></thead><tbody></tbody></table></div></div></div>');
