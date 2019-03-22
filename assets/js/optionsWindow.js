@@ -53,6 +53,18 @@
         opener.updateGUI();
     });
     
+    $('#reset').click(function() {
+        var check = confirm('Are you sure you want to delete ALL of your data? This action cannot be undone.');
+        if (check === true) {
+            opener.localStorage.setItem('userData', '');
+            alert('All user data deleted.');
+            opener.window.location.href = opener.window.location.href;
+            window.close();
+        } else {
+            alert('Action cancelled.')
+        }
+    });
+    
     $.ajax({
         url: 'https://api.myjson.com/bins',
         type: 'POST',
@@ -65,7 +77,7 @@
             $('#clickToCopy').removeClass('is-loading');
         },
         error: function(data) {
-            alert('An error occured while saving your data.');
+            $('#permalink').val('Error.');
         }
     });    
     
@@ -93,4 +105,8 @@
         } else {
             $('#workout').children().filter('option[val="Yes"]').attr('selected', 'selected');
         }
+    }
+    
+    if (opener.window.screen.availWidth >= 1280) {
+        $('#showGraph').css('display', 'block');
     }
