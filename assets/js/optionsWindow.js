@@ -33,16 +33,24 @@
     
     $('#theme').on('change', function() {
         opener.localStorage.setItem('theme', $(this).val().toLowerCase());
+        if (localStorage.getItem('theme') === null) {
+            localStorage.setItem('theme', 'light');
+        } else
         if (localStorage.getItem('theme') === 'light') {
             $('link[href="./assets/css/bulma-dark.css"]').attr('href', './assets/css/bulma.css');
+            $('meta[name="theme-color"]').attr('content', '#34495E');
+            $('meta[name="msapplication-navbutton-color"]').attr('content', '#34495E');
+            $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black-translucent');
             $('#theme').children().filter('option[val="Light"]').attr('selected', 'selected');
-            opener.updateGUI();
         } else
         if (localStorage.getItem('theme') === 'dark') {
             $('link[href="./assets/css/bulma.css"]').attr('href', './assets/css/bulma-dark.css');
+            $('meta[name="theme-color"]').attr('content', '#375A7F');
+            $('meta[name="msapplication-navbutton-color"]').attr('content', '#375A7F');
+            $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black');
             $('#theme').children().filter('option[val="Dark"]').attr('selected', 'selected');
-            opener.updateGUI();
         }
+        opener.updateGUI();
     });
     
     $.ajax({
@@ -66,9 +74,15 @@
     } else
     if (localStorage.getItem('theme') === 'light') {
         $('link[href="./assets/css/bulma-dark.css"]').attr('href', './assets/css/bulma.css');
+        $('meta[name="theme-color"]').attr('content', '#34495E');
+        $('meta[name="msapplication-navbutton-color"]').attr('content', '#34495E');
+        $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black-translucent');
         $('#theme').children().filter('option[val="Light"]').attr('selected', 'selected');
     } else
     if (localStorage.getItem('theme') === 'dark') {
         $('link[href="./assets/css/bulma.css"]').attr('href', './assets/css/bulma-dark.css');
+        $('meta[name="theme-color"]').attr('content', '#375A7F');
+        $('meta[name="msapplication-navbutton-color"]').attr('content', '#375A7F');
+        $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black');
         $('#theme').children().filter('option[val="Dark"]').attr('selected', 'selected');
     }
