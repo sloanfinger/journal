@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		
+        <!-- Page Meta -->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>journal &middot beta release</title>
+        
+        <!-- CDN Reference -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" />
+        
+        <!-- Local Styles -->
+        <link rel="stylesheet" href="assets/css/bulma.css" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        
+        <!-- Icons -->
+		<link rel="icon" href="https://sloanfinger.github.io/journal/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="https://sloanfinger.github.io/journal/logo.png" type="image/png" />
+    </head>
+    <body>
+        
+        <!-- Navbar -->
+        <nav class="navbar is-transparent is-fixed is-primary">
+            <div class="navbar-brand">
+                <a id="logo" class="navbar-item" href="./"><span>journal</span><sub>BET<span>A</span></sub></a>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <a class="button is-primary is-inverted is-outlined" id="share">
+                                <span class="icon">
+                                    <i class="fas fa-share-alt"></i>
+                                </span>
+                                <span><b>Share</b></span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Loader -->
+        <div id="loader">
+        	<div class="has-text-centered"><button class="button is-loading is-large is-light" style="background: transparent"></button></div>
+        </div>
+        
+        <!-- Content -->
+        <div id="content"></div>
+        
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="assets/js/copyToClipboard.js"></script>
+        <script src="assets/js/main.js"></script>
+    </body>
+</html>

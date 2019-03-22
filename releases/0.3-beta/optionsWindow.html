@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		
+        <!-- Page Meta -->
+        <meta charset="UTF-8" />
+        <meta name="theme-color" content="#34495E" />
+        <meta name="msapplication-navbutton-color" content="#34495E">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>options &middot; journal</title>
+        
+        <!-- CDN Reference -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" />
+        
+        <!-- Local Styles -->
+        <link rel="stylesheet" href="./assets/css/bulma.css" />
+        <link rel="stylesheet" href="./assets/css/main.css" />
+    </head>
+    <body>
+        <br />
+        <h2 class="title is-3">Options and Extras:</h2>
+        <div>
+            
+            <div class="field">
+                <label class="label">Enable Workouts</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="workout">
+                            <option val="No">No</option>
+                            <option val="Yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">App Theme</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="theme">
+                            <option val="Light">Light</option>
+                            <option val="Dark">Dark</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="showGraph" class="field" style="display: none">
+                <label class="label">View Trend Graph</label>
+                <div class="field has-addons">
+                    <div class="control">
+                        <a id="trendGraph" class="button is-link"><i class="fas fa-chart-line"></i>&nbsp;&nbsp;Generate</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Format User Data</label>
+                <div class="field has-addons">
+                    <div class="control">
+                        <a id="reset" class="button is-link"><i class="far fa-trash-alt"></i>&nbsp;&nbsp;Delete</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Permalink</label>
+                <div class="field has-addons">
+                    <div class="control">
+                        <input id="permalink" class="input is-loading" type="text" readonly>
+                    </div>
+                    <div class="control">
+                        <a id="clickToCopy" class="button is-link is-loading"><i class="fas fa-copy"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <br /><button class="button is-primary" onclick="window.close()"><i class="fab fa-font-awesome-flag"></i>&nbsp;&nbsp;Finish & Close</button><br />
+        </div>
+        
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="assets/js/copyToClipboard.js"></script>
+        <script src="assets/js/optionsWindow.js"></script>
+    </body>
+</html>

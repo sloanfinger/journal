@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		
+        <!-- Page Meta -->
+        <meta charset="UTF-8" />
+        <meta name="theme-color" content="#34495E" />
+        <meta name="msapplication-navbutton-color" content="#34495E">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta http-equiv="refresh" content="0;url=./../../" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>redirecting...</title>
+        
+        <!-- CDN Reference -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" />
+        
+        <!-- Local Styles -->
+        <link rel="stylesheet" href="./../../assets/css/bulma.css" />
+        <link rel="stylesheet" href="./../../assets/css/main.css" />
+        
+        <!-- Icons -->
+		<link rel="icon" href="https://sloanfinger.github.io/journal/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="https://sloanfinger.github.io/journal/logo.png" type="image/png" />
+    </head>
+    <body>
+        <br />
+        <br />
+        <div class="container">
+            <h2 class="title is-3"><b>Redirecting...</b></h2>
+            <p>If you are not automatically redirected within a few seconds, please click <a href="./../../">here</a>.</p>
+        </div>
+        
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>
+            
+            /* global $, localStorage */
+            
+            if (localStorage.getItem('theme') === null) {
+                localStorage.setItem('theme', 'light');
+            } else
+            if (localStorage.getItem('theme') === 'light') {
+                $('link[href="./assets/css/bulma-dark.css"]').attr('href', './assets/css/bulma.css');
+                $('meta[name="theme-color"]').attr('content', '#34495E');
+                $('meta[name="msapplication-navbutton-color"]').attr('content', '#34495E');
+                $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black-translucent');
+                $('#theme').children().filter('option[val="Light"]').attr('selected', 'selected');
+            } else
+            if (localStorage.getItem('theme') === 'dark') {
+                $('link[href="./assets/css/bulma.css"]').attr('href', './assets/css/bulma-dark.css');
+                $('meta[name="theme-color"]').attr('content', '#375A7F');
+                $('meta[name="msapplication-navbutton-color"]').attr('content', '#375A7F');
+                $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black');
+                $('#theme').children().filter('option[val="Dark"]').attr('selected', 'selected');
+            }
+            
+        </script>
+    </body>
+</html>

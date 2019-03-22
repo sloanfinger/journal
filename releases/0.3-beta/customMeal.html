@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		
+        <!-- Page Meta -->
+        <meta charset="UTF-8" />
+        <meta name="theme-color" content="#34495E" />
+        <meta name="msapplication-navbutton-color" content="#34495E">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>new item &middot; journal</title>
+        
+        <!-- CDN Reference -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" />
+        
+        <!-- Local Styles -->
+        <link rel="stylesheet" href="./assets/css/bulma.css" />
+        <link rel="stylesheet" href="./assets/css/main.css" />
+    </head>
+    <body>
+        <br />
+        <h2 class="title is-3">Setup Your Meal:</h2>
+        <div>
+            <div class="field">
+                <label class="label">Hour</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="hour">
+                            <option>01</option>
+                            <option>02</option>
+                            <option>03</option>
+                            <option>04</option>
+                            <option>05</option>
+                            <option>06</option>
+                            <option>07</option>
+                            <option>08</option>
+                            <option>09</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option selected>12</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Minute</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="minute">
+                            <option selected>:00</option>
+                            <option>:15</option>
+                            <option>:30</option>
+                            <option>:45</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">AM or PM</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="ampm">
+                            <option selected>AM</option>
+                            <option>PM</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <br /><button id="go" class="button is-primary"><i class="fas fa-check"></i>&nbsp;&nbsp;Create Meal</button><br />
+        </div>
+        
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="assets/js/customMeal.js"></script>
+    </body>
+</html>

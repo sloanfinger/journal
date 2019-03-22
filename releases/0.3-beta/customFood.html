@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		
+        <!-- Page Meta -->
+        <meta charset="UTF-8" />
+        <meta name="theme-color" content="#34495E" />
+        <meta name="msapplication-navbutton-color" content="#34495E">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>new item &middot; journal</title>
+        
+        <!-- CDN Reference -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" />
+        
+        <!-- Local Styles -->
+        <link rel="stylesheet" href="./assets/css/bulma.css" />
+        <link rel="stylesheet" href="./assets/css/main.css" />
+    </head>
+    <body>
+        <br />
+        <h2 class="title is-3">Find Your Food:</h2>
+        <div id="section1">
+            
+            <div class="field">
+                <label class="label">Name of Food</label>
+                <div class="control">
+                    <input type="text" class="input" id="search" placeholder="Strawberry yogurt" />
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Types of Food</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="type">
+                            <option val="Standard+Reference" selected>Generic</option>
+                            <option val="Branded+Food+Products">Branded</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Number of Results</label>
+                <div class="control">
+                    <input type="number" class="input" id="results" value="5" />
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Sort Foods By</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="sort">
+                            <option val="r" selected>Relevance</option>
+                            <option val="s">Name</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <br /><button id="go" class="button is-primary"><i class="fas fa-search"></i>&nbsp;&nbsp;Search Database</button>
+            <br /><br /><a id="custom">Already have nutritional information?</a>
+        </div>
+        <div id="section2" style="display: none">
+            
+            <div class="field">
+                <label class="label">Select Your Food</label>
+                <div class="control">
+                    <table class="table is-bordered is-hoverable">
+                        <tbody id="select"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <button id="return" class="button is-white"><i class="fas fa-arrow-left"></i>&nbsp;&nbsp;Go Back</button>
+        </div>
+        <div id="section3" style="display: none">
+            
+            <div class="field">
+                <label class="label">Serving Size</label>
+                <div class="control">
+                    <input type="text" class="input" id="serving" value="" style="cursor: not-allowed" placeholder="Unavaliable" readonly/>
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Servings Eaten</label>
+                <div class="control">
+                    <input type="number" class="input" id="eaten" placeholder="1" />
+                </div>
+            </div>
+            
+            <br /><button id="go2" class="button is-primary"><i class="fas fa-check"></i>&nbsp;&nbsp;Add to Meal</button>
+        </div>
+        <div id="section4" style="display: none">
+            
+            <div class="field">
+                <label class="label">Name of Food</label>
+                <div class="control">
+                    <input type="text" class="input" id="name" placeholder="Strawberry yogurt" />
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Protein (g)</label>
+                <div class="control">
+                    <input type="number" class="input" id="protein" placeholder="12" />
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Carbohydrates (g)</label>
+                <div class="control">
+                    <input type="number" class="input" id="carbs" placeholder="18" />
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Fat (g)</label>
+                <div class="control">
+                    <input type="number" class="input" id="fat" placeholder="4" />
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Serving Size</label>
+                <div class="control">
+                    <input type="text" class="input" id="serving2" placeholder="0.5 Cup" />
+                </div>
+            </div>
+            
+            <div class="field">
+                <label class="label">Servings Eaten</label>
+                <div class="control">
+                    <input type="number" class="input" id="eaten2" placeholder="1" />
+                </div>
+            </div>
+            
+            <br /><button id="go3" class="button is-primary"><i class="fas fa-check"></i>&nbsp;&nbsp;Add to Meal</button>
+            <br /><br /><a id="nutrition">Don't have nutritional information?</a><br />
+        </div>
+        
+        <!-- Scripts -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="assets/js/customFood.js"></script>
+    </body>
+</html>

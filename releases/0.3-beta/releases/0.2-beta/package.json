@@ -1,0 +1,17 @@
+{
+  "name": "nutrition",
+  "version": "1.0.0",
+  "description": "",
+  "main": "assets/scss/bulma.scss",
+  "scripts": {
+    "css-build": "node-sass --omit-source-map-url assets/sass/bulma.scss assets/css/bulma.css",
+    "css-watch": "npm run css-build -- --watch",
+    "start": "npm run css-watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bulma": "^0.7.4",
+    "node-sass": "^4.11.0"
+  }
+}
