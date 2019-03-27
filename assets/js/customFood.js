@@ -3,6 +3,14 @@
     
     var nutritionData;
     
+    function check(number) {
+        if (isNaN(number)) {
+            return 0;
+        } else {
+            return number;
+        }
+    }
+    
     function selectNDBNO(ndbno) {
         $.getJSON('https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=w4yRdn0HhrHoZJFtsV648gwSA0cCytx9S6uxTzFp&nutrients=203&nutrients=204&nutrients=205&ndbno=' + ndbno, function(response) {
             console.log(response);
@@ -15,6 +23,10 @@
         }); 
     }
     
+    $('.scan_upc').click(function() {
+        
+    });
+    
     $('#go').click(function() {
         $(this).addClass('is-loading');
         $.getJSON('https://api.nal.usda.gov/ndb/search/?format=json&q=' + encodeURIComponent($('#search').val()) + '&sort=' + $('#sort').children('option').filter(':selected').attr('val') + '&max=' +  $('#results').val() + '&offset=0&ds=' +  $('#type').children('option').filter(':selected').attr('val') + '&api_key=w4yRdn0HhrHoZJFtsV648gwSA0cCytx9S6uxTzFp', function(response) {
@@ -24,9 +36,15 @@
                 $('#go').removeClass('is-loading');
             } else {
                 var data = response.list.item;
-                var i = 0;
-                for (i = 0; i < data.length; i++) {
-                    $('#select').append('<tr style="cursor: pointer"><th onclick="selectNDBNO(\'' + data[i].ndbno + '\')">' + data[i].name + '</th></tr>');
+                for (var i = 0; i < data.length; i++) {
+                    var given = data[i].name;
+                    var name = [];
+                    var words = given.split(', UPC: ')[0].split(' ');
+                    for (var j = 0; j < words.length; j++) {
+                        console.log(words[j]);
+                        name.push(words[j][0].toUpperCase() + words[j].substr(1).toLowerCase());
+                    }
+                    $('#select').append('<tr style="cursor: pointer"><th onclick="selectNDBNO(\'' + data[i].ndbno + '\')">' + name.join(' ') + '</th></tr>');
                 }
                 $('#section1').css('display', 'none');
                 $('#section2').css('display', 'block');
@@ -36,9 +54,14 @@
     
     $('#go2').click(function() {
         var name = [];
+        var name2 = [];
         var words = nutritionData.name.split(',')[0].split(' ');
+        var words2 = nutritionData.name.split(', UPC: ')[0].split(' ');
         for (var i = 0; i < words.length; i++) {
             name.push(words[i][0].toUpperCase() + words[i].substr(1).toLowerCase());
+        }
+        for (var j = 0; j < words.length; j++) {
+            name2.push(words[j][0].toUpperCase() + words2[j].substr(1).toLowerCase());
         }
         if (nutritionData.nutrients.length < 3) {
             alert('Nutrition data unavaliable.');
@@ -46,11 +69,11 @@
         } else {
             var data = {
                 name: name.join(' '),
-                fullName: nutritionData.name,
-                protein: (Math.round(Number(nutritionData.nutrients[0].value) * Number($('#eaten').val()))).toString(),
-                carbs: (Math.round(Number(nutritionData.nutrients[2].value) * Number($('#eaten').val()))).toString(),
-                fat: (Math.round(Number(nutritionData.nutrients[1].value) * Number($('#eaten').val()))).toString(),
-                calories: ((Math.round(Number(nutritionData.nutrients[0].value) * Number($('#eaten').val()))) * 4 + (Math.round(Number(nutritionData.nutrients[2].value) * Number($('#eaten').val()))) * 4 + (Math.round(Number(nutritionData.nutrients[1].value) * Number($('#eaten').val()))) * 9).toString(),
+                fullName: name2.join(' '),
+                protein: check(Math.round(Number(nutritionData.nutrients[0].value) * Number($('#eaten').val()))).toString(),
+                carbs: check(Math.round(Number(nutritionData.nutrients[2].value) * Number($('#eaten').val()))).toString(),
+                fat: check(Math.round(Number(nutritionData.nutrients[1].value) * Number($('#eaten').val()))).toString(),
+                calories: (check(Math.round(Number(nutritionData.nutrients[0].value) * Number($('#eaten').val()))) * 4 + check(Math.round(Number(nutritionData.nutrients[2].value) * Number($('#eaten').val()))) * 4 + check(Math.round(Number(nutritionData.nutrients[1].value) * Number($('#eaten').val()))) * 9).toString(),
                 serving: nutritionData.measure,
                 eaten: $('#eaten').val().toString()
             };
@@ -61,16 +84,22 @@
     
     $('#go3').click(function() {
         var name = [];
-        var words = $('#name').split(',')[0].split(' ');
+        var name2 = [];
+        var words = $('#name').val().split(',')[0].split(' ');
+        var words2 = $('#name').val().split(' ');
         for (var i = 0; i < words.length; i++) {
             name.push(words[i][0].toUpperCase() + words[i].substr(1).toLowerCase());
         }
+        for (var j = 0; j < words2.length; j++) {
+            name2.push(words2[j][0].toUpperCase() + words2[j].substr(1).toLowerCase());
+        }
         var nutrition = {
             name: name.join(' '),
-            protein: (Math.round(Number($('#protein').val()) * Number($('#eaten2').val()))).toString(),
-            carbs: (Math.round(Number($('#carbs').val()) * Number($('#eaten2').val()))).toString(),
-            fat: (Math.round(Number($('#fat').val()) * Number($('#eaten2').val()))).toString(),
-            calories: ((Math.round(Number($('#protein').val()) * Number($('#eaten2').val()))) * 4 + (Math.round(Number($('#carbs').val()) * Number($('#eaten2').val()))) * 4 + (Math.round(Number($('#fat').val()) * Number($('#eaten2').val()))) * 9).toString(),
+            fullName: name2.join(' '),
+            protein: check(Math.round(Number($('#protein').val()) * Number($('#eaten2').val()))).toString(),
+            carbs: check(Math.round(Number($('#carbs').val()) * Number($('#eaten2').val()))).toString(),
+            fat: check(Math.round(Number($('#fat').val()) * Number($('#eaten2').val()))).toString(),
+            calories: (check(Math.round(Number($('#protein').val()) * Number($('#eaten2').val()))) * 4 + check(Math.round(Number($('#carbs').val()) * Number($('#eaten2').val()))) * 4 + check(Math.round(Number($('#fat').val()) * Number($('#eaten2').val()))) * 9).toString(),
             serving: $('#serving2').val(),
             eaten: $('#eaten2').val().toString()
         };
