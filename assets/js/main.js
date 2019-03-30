@@ -36,7 +36,7 @@
             $window.append(data);
             $window.attr('data-create', btoa(d).toString());
             $('#addMeal').attr('onclick', 'windowListener[$("#window").attr("data-create")].callback(false)');
-            $('#addMeal').html('<b style="font-size: 1.2em"><i class="fas fa-times"></i>&nbsp;&nbsp;&nbsp;Exit Window</b>');
+            $('#addMeal').html('<b style="font-size: 1.2em"><i class="fas fa-arrow-left"></i>&nbsp;&nbsp;&nbsp;Return Home</b>');
             $('#loader').css('display', 'none');
             $('#window').css('display', 'block');
             windowListener[btoa(d).toString()] = {};

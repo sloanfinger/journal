@@ -80,3 +80,8 @@
     input {
         max-width: 300px !important;
     }
+    
+    .drawingBuffer {    
+        position: absolute;
+        margin-left: -480px;
+    }
