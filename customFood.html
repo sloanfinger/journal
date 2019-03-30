@@ -1,27 +1,8 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		
-        <!-- Page Meta -->
-        <meta charset="UTF-8" />
-        <meta name="theme-color" content="#34495E" />
-        <meta name="msapplication-navbutton-color" content="#34495E">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>new item &middot; journal</title>
-        
-        <!-- CDN Reference -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" />
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" />
-        
-        <!-- Local Styles -->
-        <link rel="stylesheet" href="./assets/css/bulma.css" />
-        <link rel="stylesheet" href="./assets/css/main.css" />
-    </head>
     <body>
+        <h2 class="title is-2"><b><u>Find Your Food:</u></b></h2>
         <br />
-        <h2 class="title is-3">Find Your Food:</h2>
         <div id="section1">
             
             <div class="field">
@@ -63,7 +44,7 @@
             </div>
             
             <br /><button id="go" class="button is-primary"><i class="fas fa-search"></i>&nbsp;&nbsp;Search Database</button>
-            <br /><br /><a class="scan_upc">Scan Product UPC</a>
+            <br /><br /><a id="scan_upc">Scan Product UPC</a>
             <br /><br /><a id="custom">Already have nutritional information?</a>
         </div>
         <div id="section2" style="display: none">
@@ -144,9 +125,26 @@
             <br /><button id="go3" class="button is-primary"><i class="fas fa-check"></i>&nbsp;&nbsp;Add to Meal</button>
             <br /><br /><a id="nutrition">Don't have nutritional information?</a><br />
         </div>
+        <div id="section5" style="display: none">
+            
+            <div id="scanner-container" class="container"></div>
+            <br /><br />
+            
+            <div class="field">
+                <label class="label">Select a Product:</label>
+                <div class="control">
+                    <table class="table is-bordered is-hoverable">
+                        <tbody id="select"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <br /><br /><a id="nutrition">Go back...</a><br />
+        </div>
         
         <!-- Scripts -->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="node_modules/quagga/dist/quagga.min.js"></script>
         <script src="assets/js/customFood.js"></script>
     </body>
 </html>

@@ -63,3 +63,20 @@
         overflow-x: auto;
         width: 100%;
     }
+    
+    .has-sharp-edges {
+        border-radius: 0px !important;
+    }
+    
+    .notification {
+        padding: 1.1rem 1.75rem 1.1rem 1.75rem;
+    }
+    
+    .container {
+        padding: 32px 24px;
+        margin: 0;
+    }
+    
+    input {
+        max-width: 300px !important;
+    }

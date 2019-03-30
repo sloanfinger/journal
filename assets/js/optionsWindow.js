@@ -1,7 +1,5 @@
     
-    /* global $, opener, copyToClipboard, btoa, localStorage */
-    
-    var nutrition = opener.nutrition;
+    /* global $, updateGUI, copyToClipboard, btoa, localStorage, nutrition, windowListener */
     
     $('#trendGraph').click(function() {
         $.get('trendGraph.html', function(data) {
@@ -13,8 +11,8 @@
     });
     
     $('#clickToCopy').click(function() {
-        opener.window.location.href = $('#permalink').val();
-        copyToClipboard(opener.window.location.href);
+        window.location.href = $('#permalink').val();
+        copyToClipboard(window.location.href);
         $(this).children().filter('i').attr('class', 'fas fa-check');
         setTimeout(function() {
             $('#clickToCopy').children().filter('i').attr('class', 'fas fa-paste');
@@ -27,12 +25,11 @@
         } else {
             nutrition.showWorkout = true;
         }
-        opener.nutrition = nutrition;
-        opener.updateGUI();
+        updateGUI();
     });
     
     $('#theme').on('change', function() {
-        opener.localStorage.setItem('theme', $(this).val().toLowerCase());
+        localStorage.setItem('theme', $(this).val().toLowerCase());
         if (localStorage.getItem('theme') === null) {
             localStorage.setItem('theme', 'light');
         } else
@@ -50,16 +47,15 @@
             $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black');
             $('#theme').children().filter('option[val="Dark"]').attr('selected', 'selected');
         }
-        opener.updateGUI();
     });
     
     $('#reset').click(function() {
         var check = confirm('Are you sure you want to delete ALL of your data? This action cannot be undone.');
         if (check === true) {
-            opener.localStorage.setItem('userData', '');
+            localStorage.setItem('userData', '');
             alert('All user data deleted.');
-            opener.window.location.href = opener.window.location.href;
-            window.close();
+            window.location.href = window.location.href;
+            windowListener[$('#window').attr('data-create')].callback(false);
         } else {
             alert('Action cancelled.')
         }
@@ -72,32 +68,14 @@
         contentType:'application/json; charset=utf-8',
         dataType:'json',
         success: function(data, textStatus, jqXHR){
-            $('#permalink').val(opener.window.location.href + '#/' + data.uri.split('bins/')[1] + '/');
+            $('#permalink').val(window.location.href + '#/' + data.uri.split('bins/')[1] + '/');
             $('#permalink').removeClass('is-loading');
             $('#clickToCopy').removeClass('is-loading');
         },
         error: function(data) {
             $('#permalink').val('Error.');
         }
-    });    
-    
-    if (localStorage.getItem('theme') === null) {
-        localStorage.setItem('theme', 'light');
-    } else
-    if (localStorage.getItem('theme') === 'light') {
-        $('link[href="./assets/css/bulma-dark.css"]').attr('href', './assets/css/bulma.css');
-        $('meta[name="theme-color"]').attr('content', '#34495E');
-        $('meta[name="msapplication-navbutton-color"]').attr('content', '#34495E');
-        $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black-translucent');
-        $('#theme').children().filter('option[val="Light"]').attr('selected', 'selected');
-    } else
-    if (localStorage.getItem('theme') === 'dark') {
-        $('link[href="./assets/css/bulma.css"]').attr('href', './assets/css/bulma-dark.css');
-        $('meta[name="theme-color"]').attr('content', '#375A7F');
-        $('meta[name="msapplication-navbutton-color"]').attr('content', '#375A7F');
-        $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black');
-        $('#theme').children().filter('option[val="Dark"]').attr('selected', 'selected');
-    }
+    });
     
     if (localStorage.getItem('userData')) {
         if (!JSON.parse(localStorage.getItem('userData'))[JSON.parse(localStorage.getItem('userData')).length - 1].showWorkout) {
@@ -107,6 +85,6 @@
         }
     }
     
-    if (opener.window.screen.availWidth >= 1280) {
+    if (window.screen.availWidth >= 1280) {
         $('#showGraph').css('display', 'block');
     }

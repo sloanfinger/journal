@@ -1,23 +1,9 @@
     
-    /* global $, opener, localStorage */
+    /* global $, windowListener */
     
     $('#go').click(function() {
-        opener.windowListener[document.body.getAttribute('data-create')].callback($('#hour').val() + $('#minute').val() + $('#ampm').val().toLowerCase());
-        window.close();
+        var time = $('#time').val().split(':');
+        var hour = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        var ampm = ['am', 'pm'];
+        windowListener[$('#window').attr('data-create')].callback(hour[Number(time[0])].toString() + ':' + time[1] + ampm[Math.floor(Number(time[0]) / 12)]);
     });
-    
-    if (localStorage.getItem('theme') === null) {
-        localStorage.setItem('theme', 'light');
-    } else
-    if (localStorage.getItem('theme') === 'light') {
-        $('link[href="./assets/css/bulma-dark.css"]').attr('href', './assets/css/bulma.css');
-        $('meta[name="theme-color"]').attr('content', '#34495E');
-        $('meta[name="msapplication-navbutton-color"]').attr('content', '#34495E');
-        $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black-translucent');
-    } else
-    if (localStorage.getItem('theme') === 'dark') {
-        $('link[href="./assets/css/bulma.css"]').attr('href', './assets/css/bulma-dark.css');
-        $('meta[name="theme-color"]').attr('content', '#375A7F');
-        $('meta[name="msapplication-navbutton-color"]').attr('content', '#375A7F');
-        $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black');
-    }

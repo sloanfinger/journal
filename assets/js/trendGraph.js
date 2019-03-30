@@ -34,7 +34,7 @@
     var abbr = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
     var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     var protein = [], carbs = [], fat = [], dates = [];
-    var userData = opener.opener.userData;
+    var userData = opener.userData;
     for (var i = 0; i < userData.length; i++) {
         var nutrition = userData[i];
         dates.push(abbr[months.indexOf(nutrition.date.split(' ')[1])] + ' ' + nutrition.date.split(' ')[2]);

@@ -1,7 +1,8 @@
 
-    /* global $, opener, localStorage */
+    /* global $, windowListener, Quagga */
     
     var nutritionData;
+    var _scannerIsRunning = false;
     
     function check(number) {
         if (isNaN(number)) {
@@ -10,7 +11,81 @@
             return number;
         }
     }
-    
+
+    function startScanning() {
+        Quagga.init({
+            inputStream: {
+                name: 'Live',
+                type: 'LiveStream',
+                target: document.querySelector('#scanner-container'),
+                constraints: {
+                    width: 480,
+                    height: 320,
+                    facingMode: 'environment'
+                },
+            },
+            decoder: {
+                readers: [
+                    'upc_reader',
+                    'upc_e_reader'
+                ],
+                debug: {
+                    showCanvas: true,
+                    showPatches: true,
+                    showFoundPatches: true,
+                    showSkeleton: true,
+                    showLabels: true,
+                    showPatchLabels: true,
+                    showRemainingPatchLabels: true,
+                    boxFromPatches: {
+                        showTransformed: true,
+                        showTransformedBox: true,
+                        showBB: true
+                    }
+                }
+            },
+
+        }, function (err) {
+            if (err) {
+                console.log(err);
+                alert('Error loading scanner.');
+                return;
+            }
+            console.log('Initialization finished. Ready to start');
+            Quagga.start();
+            _scannerIsRunning = true;
+        });
+
+        Quagga.onProcessed(function (result) {
+            var drawingCtx = Quagga.canvas.ctx.overlay,
+            drawingCanvas = Quagga.canvas.dom.overlay;
+
+            if (result) {
+                if (result.boxes) {
+                    drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute('width')), parseInt(drawingCanvas.getAttribute('height')));
+                    result.boxes.filter(function (box) {
+                        return box !== result.box;
+                    }).forEach(function (box) {
+                        Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: 'green', lineWidth: 2 });
+                    });
+                }
+
+                if (result.box) {
+                    Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: '#00F', lineWidth: 2 });
+                }
+
+                if (result.codeResult && result.codeResult.code) {
+                    Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+                }
+            }
+        });
+
+
+        Quagga.onDetected(function (result) {
+            alert('Barcode detected and processed: [' + result.codeResult.code + ']');
+        });
+    }
+
     function selectNDBNO(ndbno) {
         $.getJSON('https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=w4yRdn0HhrHoZJFtsV648gwSA0cCytx9S6uxTzFp&nutrients=203&nutrients=204&nutrients=205&ndbno=' + ndbno, function(response) {
             console.log(response);
@@ -23,8 +98,10 @@
         }); 
     }
     
-    $('.scan_upc').click(function() {
-        
+    $('#scan_upc').click(function() {
+        $('#section1').css('display', 'none');
+        $('#section5').css('display', 'initial');
+        startScanning();
     });
     
     $('#go').click(function() {
@@ -77,7 +154,7 @@
                 serving: nutritionData.measure,
                 eaten: $('#eaten').val().toString()
             };
-            opener.windowListener[document.body.getAttribute('data-create')].callback(data);
+            windowListener[$('#window').attr('data-create')].callback(data);
             window.close();
         }
     });
@@ -103,7 +180,7 @@
             serving: $('#serving2').val(),
             eaten: $('#eaten2').val().toString()
         };
-        opener.windowListener[document.body.getAttribute('data-create')].callback(nutrition);
+        windowListener[$('#window').attr('data-create')].callback(nutrition);
         window.close();
     });
     
@@ -125,20 +202,3 @@
        $('#section4').css('display', 'none');
        $('#section1').css('display', 'block');
     });
-    
-
-    if (localStorage.getItem('theme') === null) {
-        localStorage.setItem('theme', 'light');
-    } else
-    if (localStorage.getItem('theme') === 'light') {
-        $('link[href="./assets/css/bulma-dark.css"]').attr('href', './assets/css/bulma.css');
-        $('meta[name="theme-color"]').attr('content', '#34495E');
-        $('meta[name="msapplication-navbutton-color"]').attr('content', '#34495E');
-        $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black-translucent');
-    } else
-    if (localStorage.getItem('theme') === 'dark') {
-        $('link[href="./assets/css/bulma.css"]').attr('href', './assets/css/bulma-dark.css');
-        $('meta[name="theme-color"]').attr('content', '#375A7F');
-        $('meta[name="msapplication-navbutton-color"]').attr('content', '#375A7F');
-        $('meta[name="apple-mobile-web-app-status-bar-style"]').attr('content', 'black');
-    }
